@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stylish To-Do List</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>📝 To-Do List</h1>
+
+    <form action="/add" method="POST">
+      <input type="text" name="content" placeholder="Add a new task..." required>
+      <button type="submit">Add</button>
+    </form>
+
+    <!-- Active Tasks -->
+    <div class="task-section">
+      <h2>📌 Active Tasks</h2>
+      <ul id="activeTasks">
+        {% for task in tasks %}
+        <li>
+          <label class="checkbox">
+            <input type="checkbox" id="complete_{{ task._id }}">
+            <span class="checkmark"></span>
+          </label>
+          <span>{{ task.content }}</span>
+          <div class="actions">
+            <button onclick="if (document.getElementById('complete_{{ task._id }}').checked) completeTask('{{ task._id }}')">Complete</button>
+            <button onclick="if (document.getElementById('complete_{{ task._id }}').checked) deleteTask('{{ task._id }}')">Delete</button>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Completed Tasks -->
+    <div class="task-section completed">
+      <h2>✅ Completed Tasks</h2>
+      <ul id="completedTasks">
+        {% for task in completed %}
+        <li>
+          <label class="checkbox">
+            <input type="checkbox" id="delete_{{ task._id }}">
+            <span class="checkmark"></span>
+          </label>
+          <span>{{ task.content }}</span>
+          <div class="actions">
+            <button onclick="if (document.getElementById('delete_{{ task._id }}').checked) deleteTask('{{ task._id }}')">Delete</button>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
